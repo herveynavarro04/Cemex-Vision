@@ -1,2 +1,5 @@
 # Ignore log .env file
 .env
+
+# Ignore venv 
+venv
