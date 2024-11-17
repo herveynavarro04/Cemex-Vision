@@ -62,7 +62,7 @@ Cemex Vision bridges the gap between traditional construction methods and modern
 #### Installation:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/cemex-vision.git
+   git clone https://github.com/herveynavarro04/Cemex-Vision.git
    ```
 2. Open the project in Xcode:
    ```bash
