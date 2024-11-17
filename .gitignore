@@ -1,2 +1,8 @@
 # Ignore log .env file
 .env
+
+# Ignore venv 
+venv
+
+# Ignore compiled file 
+tempCodeRunnerFile.py
