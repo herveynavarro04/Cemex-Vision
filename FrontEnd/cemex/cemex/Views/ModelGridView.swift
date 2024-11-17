@@ -1,59 +1,76 @@
 import SwiftUI
+import SceneKit
 
 struct ModelGridView: View {
-    // Sample model data
-    @State private var models: [ArchitecturalModel] = []
-    
     let columns = [
-        GridItem(.adaptive(minimum: 150), spacing: 20)
+        GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 20)
     ]
+    
+    // Sample data - replace with your actual models
+    let models = ["model1", "model2", "model3", "model4"] // Your model names
+    @State private var selectedModel: String?
+    @State private var showingDetail = false
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(models) { model in
-                    ModelGridItem(model: model)
+                ForEach(models, id: \.self) { model in
+                    Image(model) // Replace with your actual model preview image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 150)
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(10)
+                        .onTapGesture {
+                            selectedModel = model
+                            showingDetail = true
+                        }
                 }
             }
             .padding()
         }
-        .navigationTitle("Existing Models")
-    }
-}
-
-struct ModelGridItem: View {
-    let model: ArchitecturalModel
-    
-    var body: some View {
-        VStack {
-            // Thumbnail
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.secondary)
-                .aspectRatio(1, contentMode: .fit)
-                .overlay {
-                    Image(systemName: "building.2")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                }
-            
-            // Model info
-            VStack(alignment: .leading) {
-                Text(model.name)
-                    .font(.headline)
-                Text(model.createdAt.formatted(date: .abbreviated, time: .omitted))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+        .navigationTitle("Modelos Existentes")
+        .sheet(isPresented: $showingDetail) {
+            if let selectedModel = selectedModel {
+                Model3DDetailView(modelName: selectedModel)
             }
         }
-        .onTapGesture {
-            // Open model viewer
-        }
     }
 }
 
-struct ArchitecturalModel: Identifiable {
-    let id: UUID
-    let name: String
-    let createdAt: Date
-    let modelURL: URL
+struct Model3DDetailView: View {
+    let modelName: String
+    @Environment(\.dismiss) var dismiss
+    
+    private func loadModel() -> SCNScene? {
+        // Load directly from asset catalog
+        return SCNScene(named: modelName, inDirectory: "Models.scnassets")
+    }
+    
+    var body: some View {
+        NavigationStack {
+            if let scene = loadModel() {
+                SceneView(
+                    scene: scene,
+                    options: [
+                        .allowsCameraControl,
+                        .autoenablesDefaultLighting,
+                        .temporalAntialiasingEnabled
+                    ]
+                )
+                .navigationTitle("Vista 3D")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Cerrar") {
+                            dismiss()
+                        }
+                    }
+                }
+            } else {
+                Text("No se pudo cargar el modelo 3D")
+                    .foregroundColor(.red)
+            }
+        }
+    }
 } 

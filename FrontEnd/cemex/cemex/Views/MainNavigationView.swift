@@ -5,6 +5,7 @@ struct MainNavigationView: View {
     @State private var showingModelGrid = false
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: Image?
+    @State private var showingBlueprintSelection = false
     
     var body: some View {
         NavigationStack {
@@ -29,51 +30,48 @@ struct MainNavigationView: View {
                             .scaledToFit()
                             .frame(width: 600)
                             .shadow(radius: 10)
-                        
                     }
                     .padding(.top, 20)
                     
                     // Main action buttons
                     VStack(spacing: 24) {
-                        PhotosPicker(selection: $selectedItem, matching: .images) {
+                        Button(action: { showingBlueprintSelection = true }) {
                             HStack(spacing: 12) {
-                                Image(systemName: "doc.viewfinder")
+                                Image(systemName: "photo.on.rectangle")
                                     .font(.title)
-                                Text("Scan New Sketch")
+                                Text("Elegir Planos")
                                     .font(.title)
                             }
                             .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
+                            .background(Color.black.opacity(0.3))
+                            .cornerRadius(10)
                         }
                         
                         Button(action: { showingModelGrid = true }) {
                             HStack(spacing: 12) {
-                                Image(systemName: "square.grid.2x2")
+                                Image(systemName: "cube.fill")
                                     .font(.title)
-                                Text("Existing Models")
+                                Text("Modelos Existentes")
                                     .font(.title)
                             }
                             .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
+                            .background(Color.black.opacity(0.3))
+                            .cornerRadius(10)
                         }
                     }
                     .padding(.horizontal, 30)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .onChange(of: selectedItem) { oldValue, newValue in
-                Task {
-                    if let data = try? await newValue?.loadTransferable(type: Data.self),
-                       let uiImage = UIImage(data: data) {
-                        selectedImage = Image(uiImage: uiImage)
-                        // Here you can add logic to handle the selected image
-                    }
-                }
-            }
             .navigationDestination(isPresented: $showingModelGrid) {
                 ModelGridView()
+            }
+            .navigationDestination(isPresented: $showingBlueprintSelection) {
+                BlueprintSelectionView()
             }
         }
     }
