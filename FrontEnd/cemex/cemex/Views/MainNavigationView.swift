@@ -1,8 +1,10 @@
 import SwiftUI
+import PhotosUI
 
 struct MainNavigationView: View {
-    @State private var showingScanSheet = false
     @State private var showingModelGrid = false
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var selectedImage: Image?
     
     var body: some View {
         NavigationStack {
@@ -20,7 +22,7 @@ struct MainNavigationView: View {
                 .ignoresSafeArea()
                 
                 // Content
-                VStack(spacing: 40) {
+                VStack(spacing: 100) {
                     VStack(spacing: 20) {
                         Image("cemex")
                             .resizable()
@@ -29,30 +31,30 @@ struct MainNavigationView: View {
                             .shadow(radius: 10)
                         
                     }
-                    .padding(.top, 40)
+                    .padding(.top, 20)
                     
                     // Main action buttons
-                    VStack(spacing: 20) {
-                        Button(action: { showingScanSheet = true }) {
-                            HStack {
+                    VStack(spacing: 24) {
+                        PhotosPicker(selection: $selectedItem, matching: .images) {
+                            HStack(spacing: 12) {
                                 Image(systemName: "doc.viewfinder")
-                                    .font(.title2)
+                                    .font(.title)
                                 Text("Scan New Sketch")
-                                    .font(.title3)
+                                    .font(.title)
                             }
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
                         }
                         
                         Button(action: { showingModelGrid = true }) {
-                            HStack {
+                            HStack(spacing: 12) {
                                 Image(systemName: "square.grid.2x2")
-                                    .font(.title2)
+                                    .font(.title)
                                 Text("Existing Models")
-                                    .font(.title3)
+                                    .font(.title)
                             }
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
                         }
@@ -61,8 +63,14 @@ struct MainNavigationView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .sheet(isPresented: $showingScanSheet) {
-                SketchScannerView()
+            .onChange(of: selectedItem) { oldValue, newValue in
+                Task {
+                    if let data = try? await newValue?.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        selectedImage = Image(uiImage: uiImage)
+                        // Here you can add logic to handle the selected image
+                    }
+                }
             }
             .navigationDestination(isPresented: $showingModelGrid) {
                 ModelGridView()
