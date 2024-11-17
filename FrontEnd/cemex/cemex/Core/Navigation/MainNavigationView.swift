@@ -42,11 +42,11 @@ struct MainNavigationView: View {
                                 Text("Elegir Planos")
                                     .font(.title)
                             }
-                            .frame(maxWidth: 900)
+                            .frame(maxWidth: .infinity)
                             .padding()
                             .foregroundColor(.white)
                             .background(Color.black.opacity(0.3))
-                            .cornerRadius(10)
+                            .cornerRadius(15)
                         }
                         
                         Button(action: { showingModelGrid = true }) {
@@ -56,11 +56,11 @@ struct MainNavigationView: View {
                                 Text("Modelos Existentes")
                                     .font(.title)
                             }
-                            .frame(maxWidth: 900)
+                            .frame(maxWidth: .infinity)
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color.black.opacity(0.3))
-                            .cornerRadius(10)
+                            .background(Color(red: 0.2, green: 0.3, blue: 0.6))
+                            .cornerRadius(15)
                         }
                     }
                     .padding(.horizontal, 30)

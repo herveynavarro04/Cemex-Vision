@@ -7,21 +7,16 @@ struct ModelViewerSpace: View {
     
     var body: some View {
         RealityView { content in
-            // This is where we'll add the 3D model content
-            // For now, just a placeholder
             let model = ModelEntity(mesh: .generateBox(size: 0.3))
             model.model?.materials = [SimpleMaterial(color: .blue, isMetallic: true)]
             
-            // Add automatic rotation
             if isRotating {
                 model.components[RotationComponent.self] = RotationComponent()
             }
             
             content.add(model)
         }
-        
-        // Overlay controls
-        VStack {
+        .overlay(alignment: .top) {
             HStack {
                 Toggle("Auto-Rotate", isOn: $isRotating)
                     .padding()
@@ -38,13 +33,10 @@ struct ModelViewerSpace: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding()
-            
-            Spacer()
         }
     }
 }
 
-// Custom component for automatic rotation
 struct RotationComponent: Component {
     var rotationSpeed: Float = 0.5
 } 
