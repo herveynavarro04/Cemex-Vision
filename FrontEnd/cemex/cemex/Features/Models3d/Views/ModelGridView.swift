@@ -5,7 +5,7 @@ struct ModelGridView: View {
         GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 20)
     ]
     
-    let models = ["test3dscene"]
+    let models = ["Scene"]
     @State private var selectedModel: String?
     @State private var showingDetail = false
     
@@ -27,6 +27,7 @@ struct ModelGridView: View {
                             .font(.caption)
                     }
                     .onTapGesture {
+                        print("Attempting to load model: \(model)")
                         selectedModel = model
                         showingDetail = true
                     }
@@ -40,6 +41,25 @@ struct ModelGridView: View {
                 NavigationStack {
                     Model3DVolumeView(modelName: selectedModel)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
+        }
+        .onAppear {
+            if let modelURL = Bundle.main.url(forResource: "Scene", 
+                                            withExtension: "usdz", 
+                                            subdirectory: "Models.scnassets") {
+                print("✅ Found model at: \(modelURL)")
+            } else {
+                print("❌ Could not find model in bundle")
+                
+                // Debug: Print available resources
+                if let resourcePath = Bundle.main.resourcePath {
+                    do {
+                        let contents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
+                        print("Available resources: \(contents)")
+                    } catch {
+                        print("Error listing resources: \(error)")
+                    }
                 }
             }
         }

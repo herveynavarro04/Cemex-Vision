@@ -7,7 +7,7 @@ struct MainNavigationView: View {
     @State private var selectedImage: Image?
     @State private var showingBlueprintSelection = false
     
-    var body: some View {
+        var body: some View {
         NavigationStack {
             ZStack {
                 // Beautiful gradient background
@@ -20,7 +20,7 @@ struct MainNavigationView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .ignoresSafeArea()
+                .edgesIgnoringSafeArea(.all) // Ensures the gradient covers the full screen
                 
                 // Content
                 VStack(spacing: 100) {
@@ -42,10 +42,10 @@ struct MainNavigationView: View {
                                 Text("Elegir Planos")
                                     .font(.title)
                             }
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color.black.opacity(0.3))
+                            .background(Color(red: 0.2, green: 0.3, blue: 0.6, opacity: 0.3))
                             .cornerRadius(15)
                         }
                         
@@ -56,10 +56,10 @@ struct MainNavigationView: View {
                                 Text("Modelos Existentes")
                                     .font(.title)
                             }
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 900)
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color(red: 0.2, green: 0.3, blue: 0.6))
+                            .background(Color(red: 0.2, green: 0.3, blue: 0.6, opacity: 0.3))
                             .cornerRadius(15)
                         }
                     }
