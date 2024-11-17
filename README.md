@@ -74,12 +74,3 @@ Cemex Vision bridges the gap between traditional construction methods and modern
 #### Usage:
 - Launch the app and follow the guided prompts to start scanning blueprints.
 - Interact with the generated 3D models in the AR environment.
-
----
-
-### 📩 **Contact**
-For questions, contributions, or collaborations, please reach out at **your-email@example.com**.
-
----
-
-Let me know if you'd like to tweak or add any details! 🚀
