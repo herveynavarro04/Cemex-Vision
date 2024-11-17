@@ -35,7 +35,7 @@ def get_image_url(filename):
         file_url = s3.generate_presigned_url(
             'get_object',
             Params={
-                'Bucket': IMG_BUCKET,
+                'Bucket': MODEL_BUCKET,
                 'Key': f'uploads/{filename}'
             },
             ExpiresIn=3600  
