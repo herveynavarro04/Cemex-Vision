@@ -1,0 +1,12 @@
+opencv-python==4.8.1.78  # 4.2.0.34 isn't available for ARM Macs, 4.8.1.78 is stable
+numpy==1.22.0  # This version is fine
+configparser==3.5.0
+future-fstrings==1.2.0
+requests==2.25.1
+pyfiglet==0.7
+setuptools==54.1.0
+scipy==1.8.0  # 1.5.4 doesn't support ARM, 1.8.0 is the first version with good ARM support
+pillow==9.0.1
+matplotlib==3.5.1
+black==22.1.0
+pytest==7.0.1
