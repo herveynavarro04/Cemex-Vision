@@ -1,9 +1,10 @@
 import SwiftUI
 import RealityKit
+import RealityKitContent
 
 struct TestUSDZView: View {
     var body: some View {
-        Model3D(named: "Scene", bundle: .main) { model in
+        Model3D(named: "Plano", bundle: realityKitContentBundle) { model in
             model
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -13,8 +14,8 @@ struct TestUSDZView: View {
         .frame(width: 300, height: 300)
         #if DEBUG
         .task {
-            // Debug: Print available USDZ files in bundle
-            print("Available USDZ files:", Bundle.main.urls(forResourcesWithExtension: "usdz", subdirectory: nil) ?? [])
+            // Debug: Print available models in RealityKitContent bundle
+            print("Available models:", realityKitContentBundle.urls(forResourcesWithExtension: "usda", subdirectory: nil) ?? [])
         }
         #endif
     }

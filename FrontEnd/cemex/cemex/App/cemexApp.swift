@@ -11,11 +11,11 @@ import SwiftUI
 struct cemexApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainNavigationView()
         }
-        
-        ImmersiveSpace(id: "ModelViewer") {
-            ModelViewerSpace()
+
+        ImmersiveSpace(id: "3DModel") {
+            Model3DVolumeView(modelName: "Plano")
         }
     }
 }

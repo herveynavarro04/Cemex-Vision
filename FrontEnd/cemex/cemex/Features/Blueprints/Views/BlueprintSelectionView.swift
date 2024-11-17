@@ -3,38 +3,61 @@ import SwiftUI
 struct BlueprintSelectionView: View {
     @StateObject private var viewModel = BlueprintViewModel()
     @Environment(\.dismiss) private var dismiss
+    @State private var isLoading = false
     
     let columns = [
         GridItem(.adaptive(minimum: 300), spacing: 20)
     ]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(viewModel.blueprints) { blueprint in
-                    VStack {
-                        if let image = UIImage(named: blueprint.imageName) {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                        } else {
-                            Text("Image not found")
-                                .foregroundColor(.red)
+        ZStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(viewModel.blueprints) { blueprint in
+                        VStack {
+                            if let image = UIImage(named: blueprint.imageName) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 200)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 5)
+                            } else {
+                                Text("Image not found")
+                                    .foregroundColor(.red)
+                            }
+                            
+                            Text(blueprint.name)
+                                .foregroundColor(.white)
                         }
-                        
-                        Text(blueprint.name)
-                            .foregroundColor(.white)
-                    }
-                    .onTapGesture {
-                        viewModel.selectBlueprint(blueprint)
-                        dismiss()
+                        .onTapGesture {
+                            isLoading = true
+                            viewModel.selectBlueprint(blueprint)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                isLoading = false
+                                dismiss()
+                            }
+                        }
                     }
                 }
+                .padding()
             }
-            .padding()
+            
+            if isLoading {
+                Color.black.opacity(0.7)
+                    .ignoresSafeArea()
+                
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                        .padding()
+                    
+                    Text("Modelando diseño")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
         }
         .background(
             LinearGradient(

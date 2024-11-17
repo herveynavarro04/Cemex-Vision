@@ -6,8 +6,10 @@ struct MainNavigationView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: Image?
     @State private var showingBlueprintSelection = false
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
-        var body: some View {
+    var body: some View {
         NavigationStack {
             ZStack {
                 // Beautiful gradient background
@@ -49,7 +51,9 @@ struct MainNavigationView: View {
                             .cornerRadius(15)
                         }
                         
-                        Button(action: { showingModelGrid = true }) {
+                        Button(action: {
+                            showingModelGrid = true
+                        }) {
                             HStack(spacing: 12) {
                                 Image(systemName: "cube.fill")
                                     .font(.title)
